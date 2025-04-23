@@ -4,6 +4,10 @@ on:
   push:
     branches: [main] # 例如：main 或 dev
 
+# 添加权限配置
+permissions:
+  contents: write # 允许写入仓库内容
+
 jobs:
   build:
     runs-on: ubuntu-latest
