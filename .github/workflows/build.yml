@@ -28,10 +28,13 @@ jobs:
         run: npm run build
 
       # 可选：添加部署步骤（例如部署到 GitHub Pages）
-      - name: Deploy to gh-pages
+      - name: Deploy to dist
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
-          publish_branch: gh-pages # 指定目标分支
+          publish_branch: dist # 指定目标分支
           commit_message: "Deploy: ${{ github.event.head_commit.message }} (来自提交 ${{ github.sha }})"
+
+          1 接口。
+          2 github 密钥
