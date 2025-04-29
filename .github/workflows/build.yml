@@ -27,9 +27,7 @@ jobs:
       - name: Build project
         run: npm run build
 
-      # 可选：添加部署步骤（例如部署到 GitHub Pages）
       - name: Deploy to dist
-        uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
