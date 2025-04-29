@@ -27,9 +27,23 @@ jobs:
       - name: Build project
         run: npm run build
 
-      - name: Deploy to dist
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
-          publish_branch: dist # 指定目标分支
-          commit_message: "Deploy: ${{ github.event.head_commit.message }} (来自提交 ${{ github.sha }})"
+      - name: Push dist to dist branch
+        run: |
+          # 配置Git
+          git config --global user.name "chocolate-11"
+          git config --global user.email "821655475@qq.com"
+
+          # 切换到dist分支或创建它
+          git checkout --orphan dist || git checkout dist
+          git reset --hard
+
+          # 删除除.git外的所有文件
+          find . -path ./.git -prune -o -exec rm -rf {} \; 2> /dev/null || true
+
+          # 复制dist目录内容
+          cp -r ../dist/* .
+
+          # 提交并推送
+          git add -A
+          git commit -m "Deploy: ${{ github.event.head_commit.message }}"
+          git push origin dist --force
