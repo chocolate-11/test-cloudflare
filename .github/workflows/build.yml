@@ -50,14 +50,24 @@ jobs:
           git commit -m "${{ github.event.head_commit.message }}"
           git push origin dist --force
 
-      - name: Deploy to Windows Server via SSH
+      # - name: Deploy to Windows Server via SSH
+      #   env:
+      #     SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
+      #   run: |
+      #     # 安装 SSH 密钥
+      #     mkdir -p ~/.ssh
+      #     echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
+      #     chmod 600 ~/.ssh/id_ed25519
+
+      #     # 使用 scp 同步文件（确保服务器安装了 OpenSSH）
+      #     scp -o StrictHostKeyChecking=no -r ./dist/* Administrator@124.223.29.125:"C:/Users/Administrator/Desktop/nginx-1.28.0/html/self_photos/"
+      - name: Deploy to Windows Server
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
         run: |
-          # 安装 SSH 密钥
           mkdir -p ~/.ssh
           echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
+          # 严格设置权限
           chmod 600 ~/.ssh/id_ed25519
-
-          # 使用 scp 同步文件（确保服务器安装了 OpenSSH）
-          scp -o StrictHostKeyChecking=no -r ./dist/* Administrator@124.223.29.125:"C:/Users/Administrator/Desktop/nginx-1.28.0/html/self_photos/"
+          # 测试连接（显示详细日志）
+          ssh -vvv -o StrictHostKeyChecking=no Administrator@124.223.29.125
