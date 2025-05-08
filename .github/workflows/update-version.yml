@@ -1,0 +1,52 @@
+name: Update Version
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "New version number (e.g., 0.2.3)"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  update-version:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.13.1
+
+      - name: Update version in config file
+        run: |
+          # Update the VERSION constant in src/config.js
+          sed -i "s/export const VERSION = \".*\"/export const VERSION = \"${{ inputs.version }}\"/" src/config/url.js
+
+          # Configure git
+          git config --global user.name "chocolate-11"
+          git config --global user.email "821655475@qq.com"
+
+          # Commit and push changes
+          git add src/config.js
+          git commit -m "Update version to ${{ inputs.version }}"
+          git push origin main
+
+      - name: Trigger build workflow
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.actions.createWorkflowDispatch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'build-on-push.yml',  # Or your build workflow filename
+              ref: 'main'
+            });

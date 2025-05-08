@@ -1,12 +1,10 @@
 <template>
   <img alt="Vue logo" src="./assets/logo.png" />
-  5
+  {{ VERSION }}
 </template>
 
-<script>
-export default {
-  name: "App",
-};
+<script setup>
+import { VERSION } from "./config/url.js";
 </script>
 
 <style>
