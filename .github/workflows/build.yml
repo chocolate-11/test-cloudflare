@@ -49,3 +49,8 @@ jobs:
           git add -A
           git commit -m "${{ github.event.head_commit.message }}"
           git push origin dist --force
+      - name: Call server webhook
+        run: |
+          curl -X POST http://your-server-ip:3000/webhook \
+            -H "Content-Type: application/json" \
+            -d '{"ref": "refs/heads/dist"}'
