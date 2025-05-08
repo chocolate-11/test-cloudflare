@@ -48,4 +48,4 @@ jobs:
           # 提交并推送
           git add -A
           git commit -m "${{ github.event.head_commit.message }}"
-          git push origin dist --force
+          git push origin dist
