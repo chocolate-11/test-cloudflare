@@ -70,7 +70,7 @@ jobs:
 
           # 提交并推送
           git add -A
-          git commit -m "${{ github.event.head_commit.message }}"
+          git commit -m "Update version to ${{ inputs.version }}"
           git push origin dist --force
 
       - name: Call server webhook
