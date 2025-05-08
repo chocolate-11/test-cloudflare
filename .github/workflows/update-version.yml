@@ -28,7 +28,7 @@ jobs:
 
       - name: Update version in config file
         run: |
-          # Update the VERSION constant in src/config.js
+          # Update the VERSION constant in src/config/url.js
           sed -i "s/export const VERSION = \".*\"/export const VERSION = \"${{ inputs.version }}\"/" src/config/url.js
 
           # Configure git
@@ -36,7 +36,7 @@ jobs:
           git config --global user.email "821655475@qq.com"
 
           # Commit and push changes
-          git add src/config.js
+          git add .
           git commit -m "Update version to ${{ inputs.version }}"
           git push origin main
 
